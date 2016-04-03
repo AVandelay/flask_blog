@@ -15,11 +15,13 @@ def index():
 @app.route('/admin')
 @login_required
 def admin():
-    if session.get('is_author'):
-        return render_template('blog/admin.html')
     blogs = Blog.query.count()
     if blogs == 0:
         return redirect(url_for('setup'))
+    if session.get('is_author'):
+        return render_template('blog/admin.html')
+    else:
+        abort(403)
     return render_template('blog/admin.html')
 
 @app.route('/setup', methods=('GET', 'POST'))
@@ -52,3 +54,8 @@ def setup():
         flash('Blog created')
         return redirect('/admin')
     return render_template('blog/setup.html', form=form)
+
+@app.route('/post')
+@login_required
+def post():
+    return "Blog Post"
