@@ -11,3 +11,4 @@ migrate = Migrate(app, db)
 
 from blog import views
 from author import views
+

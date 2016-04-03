@@ -10,15 +10,14 @@ import bcrypt
 @app.route('/')
 @app.route('/index')
 def index():
-    blogs = Blog.query.count()
-    if blogs == 0:
-        return redirect(url_for('setup'))
     return "Hello, World!"
 
 @app.route('/admin')
 @login_required
 def admin():
-
+    blogs = Blog.query.count()
+    if blogs == 0:
+        return redirect(url_for('setup'))
     return render_template('blog/admin.html')
 
 @app.route('/setup', methods=('GET', 'POST'))
