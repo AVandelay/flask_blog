@@ -11,13 +11,16 @@ from slugify import slugify
 @app.route('/')
 @app.route('/index')
 def index():
-    return "Hello, World!"
+    blog = Blog.query.first()
+    posts = Post.query.order_by(Post.publish_date.desc())
+    return render_template('blog/index.html', blog=blog, posts=posts)
 
 @app.route('/admin')
-@author_required
 @login_required
+@author_required
 def admin():
-    return render_template('blog/admin.html')
+    posts = Post.query.order_by(Post.publish_date.desc())
+    return render_template('blog/admin.html', posts=posts)
 
 @app.route('/setup', methods=('GET', 'POST'))
 def setup():
@@ -63,11 +66,8 @@ def post():
             db.session.add(new_category)
             db.session.flush()
             category = new_category
-        elif form.category.data:
-            category_id = form.category.get_pk(form.category.data)
-            category = Category.query.filter_by(id=category_id).first
         else:
-            category = None
+            category = form.category.data
         blog = Blog.query.first()
         author = Author.query.filter_by(username=session['username']).first()
         title = form.title.data
