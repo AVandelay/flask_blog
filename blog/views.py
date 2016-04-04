@@ -8,7 +8,7 @@ from author.decorators import login_required, author_required
 import bcrypt
 from slugify import slugify
 
-POSTS_PER_PAGE = 5
+POSTS_PER_PAGE = 3
 
 @app.route('/')
 @app.route('/index')
@@ -21,10 +21,11 @@ def index(page=1):
     return render_template('blog/index.html', blog=blog, posts=posts)
 
 @app.route('/admin')
+@app.route('/admin/<int:page>')
 @login_required
 @author_required
-def admin():
-    posts = Post.query.order_by(Post.publish_date.desc())
+def admin(page=1):
+    posts = Post.query.order_by(Post.publish_date.desc()).paginate(page, POSTS_PER_PAGE, False)
     return render_template('blog/admin.html', posts=posts)
 
 @app.route('/setup', methods=('GET', 'POST'))
