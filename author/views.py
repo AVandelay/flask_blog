@@ -1,5 +1,5 @@
 from flask_blog import app
-from flask import render_template, redirect, session, request, url_for
+from flask import render_template, redirect, session, request, url_for, flash
 from author.form import RegisterForm, LoginForm
 from author.models import Author
 from author.decorators import login_required
@@ -21,6 +21,7 @@ def login():
             if bcrypt.hashpw(form.password.data, author.password) == author.password:
                 session['username'] = form.username.data
                 session['is_author'] = author.is_author
+                flash("User %s logged in" % form.username.data)
                 if 'next' in session:
                     next = session.get('next')
                     session.pop('next')
@@ -50,4 +51,5 @@ def success():
 def logout():
     session.pop('username')
     session.pop('is_author')
+    flash("You have logged out")
     return redirect(url_for('index'))
