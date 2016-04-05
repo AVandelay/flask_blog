@@ -5,18 +5,23 @@
 {% block content %}
 
 <div class="row">
-    
-    <div class="col-md-offset-3 col-md-6">
-        
-    <h3>{{ post.title }}</h3>
-    
-    {{ post.body|markdown }}
-    
-    <hr />
-    
-    <div class="text-muted">Posted By<a href="#">{{ post.author.fullname }}</a>
-    on {{ post.publish_date.strftime('%Y-%m-%d) }} in <a href="#"> {{ post.category.name }}</a></div>
 
+  <div class="col-md-offset-3 col-md-6">
+    
+    {% if post.image %}
+    <img src="{{ post.imgsrc }}" height="150px" class="img-rounded" />
+    {% endif %}
+  
+    <h3>{{ post.title }}</h3>
+
+    {{ post.body|markdown }}
+
+    <hr />
+    <div class="text-muted">Posted by <a href="#">{{ post.author.fullname }}</a> on {{ post.publish_date.strftime('%Y-%m-%d') }} in <a href="#">{{ post.category.name }}</a>
     </div>
+
+  </div>
+
 </div>
+
 {% endblock %}
