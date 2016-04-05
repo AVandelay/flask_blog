@@ -43,6 +43,8 @@ def register():
 @app.route('/success')
 def success():
     return "Author registered!"
+    
+
 
 @app.route('/logout')
 def logout():
